@@ -1,0 +1,74 @@
+From 9478bbcd1d8a03762924a0b4533c1b84cbfcaa57 Mon Sep 17 00:00:00 2001
+From: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Date: Fri, 5 Apr 2019 03:06:18 +0200
+Subject: [PATCH 1/1] ShellPkg/CommandLib: avoid NULL derefence and memory leak
+
+Since TianoCore EDK2 commit d65f2cea36d1 ("ShellPkg/CommandLib: Locate
+proper UnicodeCollation instance") in edk2 the UEFI Shell crashes if EFI
+variable PlatformLang is not defined due to dereferencing gUnicodeCollation
+gUnicodeCollation (= NULL) in ShellCommandRegisterCommandName().
+
+Furthermore CommandInit() is leaking PlatformLang if
+gUnicodeCollation != NULL.
+
+Close the memory leak and use the first UnicodeCollation instance if
+PlatfomLang is not defined.
+
+Fixes: d65f2cea36d1 ("ShellPkg/CommandLib: Locate proper UnicodeCollation
+instance")
+Contributed-under: TianoCore Contribution Agreement 1.1
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Reviewed-by: Zhichao Gao <zhichao.gao@intel.com>
+---
+ .../UefiShellCommandLib/UefiShellCommandLib.c | 20 +++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
+
+diff --git a/ShellPkg/Library/UefiShellCommandLib/UefiShellCommandLib.c b/ShellPkg/Library/UefiShellCommandLib/UefiShellCommandLib.c
+index ddc4bb1567..e60279e5ac 100644
+--- a/ShellPkg/Library/UefiShellCommandLib/UefiShellCommandLib.c
++++ b/ShellPkg/Library/UefiShellCommandLib/UefiShellCommandLib.c
+@@ -80,12 +80,10 @@ CommandInit(
+   EFI_STATUS                      Status;
+   CHAR8                           *PlatformLang;
+ 
+-  GetEfiGlobalVariable2 (EFI_PLATFORM_LANG_VARIABLE_NAME, (VOID**)&PlatformLang, NULL);
+-  if (PlatformLang == NULL) {
+-    return EFI_UNSUPPORTED;
+-  }
+-
+   if (gUnicodeCollation == NULL) {
++
++    GetEfiGlobalVariable2 (EFI_PLATFORM_LANG_VARIABLE_NAME, (VOID**)&PlatformLang, NULL);
++
+     Status = gBS->LocateHandleBuffer (
+                     ByProtocol,
+                     &gEfiUnicodeCollation2ProtocolGuid,
+@@ -113,6 +111,14 @@ CommandInit(
+         continue;
+       }
+ 
++      //
++      // Without clue provided use the first Unicode Collation2 protocol.
++      //
++      if (PlatformLang == NULL) {
++        gUnicodeCollation = Uc;
++        break;
++      }
++
+       //
+       // Find the best matching matching language from the supported languages
+       // of Unicode Collation2 protocol.
+@@ -132,7 +138,9 @@ CommandInit(
+     if (Handles != NULL) {
+       FreePool (Handles);
+     }
+-    FreePool (PlatformLang);
++    if (PlatformLang != NULL) {
++      FreePool (PlatformLang);
++    }
+   }
+ 
+   return (gUnicodeCollation == NULL) ? EFI_UNSUPPORTED : EFI_SUCCESS;
+-- 
+2.20.1
+
