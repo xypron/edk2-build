@@ -1,3 +1,8 @@
+# SPDX-License-Identifier: BSD-2-Clause
+#
+# Copyright 2019, Heinrich Schuchardt <xypron.glpk@gmx.de>
+#
+# Build tianocore/edk2 Shell.efi
 
 NPROC=${shell nproc}
 
@@ -7,8 +12,6 @@ export EDK_TOOLS_PATH=$(PWD)/edk2/BaseTools
 export CONF_PATH=$(PWD)/edk2/Conf
 export GCC5_AARCH64_PREFIX=aarch64-linux-gnu-
 export PATH:=$(PWD)/edk2/BaseTools/BinWrappers/PosixLike/:$(PATH)
-export TARGET_ARCH=AARCH64
-export TARGET=RELEASE
 
 all:
 	make prepare
@@ -19,7 +22,7 @@ prepare:
 	https://github.com/tianocore/edk2 edk2
 	test -d edk2/BaseTools/Source/C/bin/ || \
 	cd edk2 && bash -c '. edk2/edksetup.sh --reconfig'
-	cp  target.txt edk2/Conf
+	cp target.txt edk2/Conf
 	cd edk2/BaseTools/Source/C && make -j $(NPROC)
 
 build:
@@ -28,4 +31,4 @@ build:
 	find edk2/Build/ -name '*.efi'
 
 clean:
-	rm -rf edk2/Build	
+	build cleanall
