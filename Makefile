@@ -23,7 +23,6 @@ prepare:
 	test -d edk2/BaseTools/Source/C/bin/ || \
 	cd edk2 && bash -c '. edk2/edksetup.sh --reconfig'
 	cp target.txt edk2/Conf
-	test -d edk2/BaseTools/Source/C/bin/ || \
 	cd edk2/BaseTools/Source/C && make -j $(NPROC)
 
 build:
