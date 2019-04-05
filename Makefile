@@ -23,12 +23,16 @@ prepare:
 	test -d edk2/BaseTools/Source/C/bin/ || \
 	cd edk2 && bash -c '. edk2/edksetup.sh --reconfig'
 	cp target.txt edk2/Conf
+	test -d edk2/BaseTools/Source/C/bin/ || \
 	cd edk2/BaseTools/Source/C && make -j $(NPROC)
 
 build:
 	cd edk2 && BaseTools/BinWrappers/PosixLike/build -a AARCH64 \
-	-p ShellPkg/ShellPkg.dsc || true
+	-p ShellPkg/ShellPkg.dsc
 	find edk2/Build/ -name '*.efi'
+	test -d ../u-boot-build/tftp && \
+	cp edk2/Build/Shell/RELEASE_GCC5/AARCH64/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi \
+	../u-boot-build/tftp/Shell_arm64.efi
 
 clean:
 	build cleanall
