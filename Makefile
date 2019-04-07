@@ -18,7 +18,6 @@ export PATH:=$(PWD)/edk2/BaseTools/BinWrappers/PosixLike/:$(PATH)
 all:
 	make prepare
 	make build-sct
-	make build-shell
 
 prepare:
 	test -d edk2 || git clone -v \
