@@ -27,7 +27,7 @@ prepare:
 	test -d edk2/SctPkg || \
 	(cd edk2 && ln -s ../edk2-test/uefi-sct/SctPkg SctPkg)
 	test -d edk2/BaseTools/Source/C/bin/ || \
-	cd edk2 && bash -c '. edk2/edksetup.sh --reconfig'
+	cd edk2 && bash -c '. edksetup.sh --reconfig'
 	cp target.txt edk2/Conf
 	cd edk2/BaseTools/Source/C && make -j $(NPROC)
 
