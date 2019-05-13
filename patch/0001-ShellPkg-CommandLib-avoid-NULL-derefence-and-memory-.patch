@@ -18,6 +18,7 @@ Fixes: d65f2cea36d1 ("ShellPkg/CommandLib: Locate proper UnicodeCollation
 instance")
 Contributed-under: TianoCore Contribution Agreement 1.1
 Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Reviewed-by: Zhichao Gao <zhichao.gao@intel.com>
 ---
  .../UefiShellCommandLib/UefiShellCommandLib.c | 20 +++++++++++++------
  1 file changed, 14 insertions(+), 6 deletions(-)
