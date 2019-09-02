@@ -1,0 +1,47 @@
+From f325261ee3db3513939126ceba72d324647485c0 Mon Sep 17 00:00:00 2001
+From: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Date: Mon, 2 Sep 2019 11:28:03 +0200
+Subject: [edk2-test] [PATCH] uefi-sct/SctPkg: StrUpr() test for cyrillic letters
+
+REF: https://bugzilla.tianocore.org/show_bug.cgi?id=1911
+
+The test of StrUpr() of the UnicodeCollationProtocol2 uses the following
+test string:
+
+L"\x30\x50[A-D]\x40\x20\x30\x50f\x40\x20"
+
+This string contains the Unicode code point 0x050f (CYRILLIC SMALL LETTER
+KOMI TJE). The correct conversion to upper case is 0x050e (CYRILLIC
+CAPITAL LETTER KOMI TJE).
+
+The SCT code uses function ToUpper() which is not a part of the SCT code
+itself for the verification. As the EDK2 implementation of StrUpr() does
+not support upper-casing cyrillic letters it does not convert 0x050f but
+leaves it unchanged.
+
+This leads to rejecting the output of UEFI implementations fully supporting
+cyrillic letters.
+
+Replace cyrillic 0x50f by 0x50 ('P') to avoid false positives.
+
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+---
+ .../BlackBoxTest/UnicodeCollation2BBTestFunction.c              | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/uefi-sct/SctPkg/TestCase/UEFI/EFI/Protocol/UnicodeCollation2/BlackBoxTest/UnicodeCollation2BBTestFunction.c b/uefi-sct/SctPkg/TestCase/UEFI/EFI/Protocol/UnicodeCollation2/BlackBoxTest/UnicodeCollation2BBTestFunction.c
+index a8652a5c..653b263a 100644
+--- a/uefi-sct/SctPkg/TestCase/UEFI/EFI/Protocol/UnicodeCollation2/BlackBoxTest/UnicodeCollation2BBTestFunction.c
++++ b/uefi-sct/SctPkg/TestCase/UEFI/EFI/Protocol/UnicodeCollation2/BlackBoxTest/UnicodeCollation2BBTestFunction.c
+@@ -451,7 +451,7 @@ BBTestStrUprFunctionAutoTest (
+   CHAR16                               *TestData[] ={
+                                              L"\x21\x22\x31\x32\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4A\x4B\x4C\x4D\x4E\x4F\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5Ax61\x62\x7D\x7E",
+                                              L"\x30\x50[abcdzyxw!)(@#*]\x40\x20\x30\x50\ab\x40\x20",
+-                                             L"\x30\x50[A-D]\x40\x20\x30\x50f\x40\x20",
++                                             L"\x30\x50[A-D]\x40\x20\x30\x50\x40\x20",
+                                              L""
+                                         };
+ 
+-- 
+2.20.1
+

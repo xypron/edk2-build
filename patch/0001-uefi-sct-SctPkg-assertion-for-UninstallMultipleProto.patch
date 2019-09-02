@@ -1,0 +1,43 @@
+From 57b2f9f1a6568eac547d9ec7cf660d236f6f6db6 Mon Sep 17 00:00:00 2001
+From: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Date: Mon, 2 Sep 2019 10:28:03 +0200
+Subject: [edk2-test] [PATCH 1/1] uefi-sct/SctPkg: assertion for UninstallMultipleProtocols
+
+REF: https://bugzilla.tianocore.org/show_bug.cgi?id=1869
+
+BS.UninstallMultipleProtocolInterfaces - InterfaceTestCheckpoint6 expects
+UninstallMultipleProtocols() to return EFI_ACCESS_DENIED but the UEFI spec
+has:
+
+"If any errors are generated while the protocol interfaces are being
+uninstalled, then the protocols uninstalled prior to the error will be
+reinstalled with the boot service
+EFI_BOOT_SERVICES.InstallProtocolInterface() and the status code
+EFI_INVALID_PARAMETER is returned."
+
+So the SCT should check for EFI_INVALID_PARAMETER and not for
+EFI_ACCESS_DENIED.
+
+Correct the assertion.
+
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+---
+ .../BlackBoxTest/ProtocolHandlerBBTestFunction_2.c              | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/uefi-sct/SctPkg/TestCase/UEFI/EFI/BootServices/ProtocolHandlerServices/BlackBoxTest/ProtocolHandlerBBTestFunction_2.c b/uefi-sct/SctPkg/TestCase/UEFI/EFI/BootServices/ProtocolHandlerServices/BlackBoxTest/ProtocolHandlerBBTestFunction_2.c
+index c143e558..fe6146b2 100644
+--- a/uefi-sct/SctPkg/TestCase/UEFI/EFI/BootServices/ProtocolHandlerServices/BlackBoxTest/ProtocolHandlerBBTestFunction_2.c
++++ b/uefi-sct/SctPkg/TestCase/UEFI/EFI/BootServices/ProtocolHandlerServices/BlackBoxTest/ProtocolHandlerBBTestFunction_2.c
+@@ -12778,7 +12778,7 @@ BBTestUninstallMultipleProtocolInterfacesInterfaceTestCheckPoint6 (
+     //
+     // Step 1: check return status
+     //
+-    if (EFI_ACCESS_DENIED == Status) {
++    if (EFI_INVALID_PARAMETER == Status) {
+       AssertionType = EFI_TEST_ASSERTION_PASSED;
+     } else {
+       AssertionType = EFI_TEST_ASSERTION_FAILED;
+-- 
+2.20.1
+
