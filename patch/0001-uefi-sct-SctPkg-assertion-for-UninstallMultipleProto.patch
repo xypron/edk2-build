@@ -22,6 +22,7 @@ Correct the assertion.
 
 Contributed-under: TianoCore Contribution Agreement 1.1
 Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Reviewed-by: Eric Jin <eric.jin@intel.com>
 ---
  .../BlackBoxTest/ProtocolHandlerBBTestFunction_2.c              | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

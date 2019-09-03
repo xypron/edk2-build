@@ -26,6 +26,7 @@ Replace cyrillic 0x50f by 0x50 ('P') to avoid false positives.
 
 Contributed-under: TianoCore Contribution Agreement 1.1
 Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Reviewed-by: Eric Jin <eric.jin@intel.com>
 ---
  .../BlackBoxTest/UnicodeCollation2BBTestFunction.c              | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
