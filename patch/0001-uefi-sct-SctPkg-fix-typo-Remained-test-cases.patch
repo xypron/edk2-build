@@ -1,0 +1,33 @@
+From e3a3ca70c9d73042e1e5e7060c27aa10e74007e3 Mon Sep 17 00:00:00 2001
+From: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Date: Tue, 3 Sep 2019 11:39:20 +0200
+Subject: [edk2-test] [PATCH 1/1] uefi-sct/SctPkg: fix typo 'Remained test cases'
+
+%s/Remained/Remaining/g
+
+Contributed-under: TianoCore Contribution Agreement 1.1
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+---
+ .../SctPkg/TestInfrastructure/SCT/Framework/Execute/Execute.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/uefi-sct/SctPkg/TestInfrastructure/SCT/Framework/Execute/Execute.c b/uefi-sct/SctPkg/TestInfrastructure/SCT/Framework/Execute/Execute.c
+index 9e7f672e..6fd36914 100644
+--- a/uefi-sct/SctPkg/TestInfrastructure/SCT/Framework/Execute/Execute.c
++++ b/uefi-sct/SctPkg/TestInfrastructure/SCT/Framework/Execute/Execute.c
+@@ -608,10 +608,10 @@ Routine Description:
+   //
+   while (TRUE) {
+     //
+-    // Calculate the number of remained cases
++    // Calculate the number of remaining test cases
+     //
+     GetTestCaseRemainNum(&Remain);
+-    SctPrint(L"  Remained test cases: %d\n", Remain);
++    SctPrint(L"  Remaining test cases: %d\n", Remain);
+ 
+     //
+     // Send assertion to remotion computer in passive mode to inform case begin.
+-- 
+2.23.0.rc1
+
