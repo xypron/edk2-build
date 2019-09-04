@@ -15,17 +15,24 @@ export PATH:=$(PWD)/edk2/BaseTools/BinWrappers/PosixLike/:$(PATH)
 
 all:
 	make prepare
-	make build
+	make build-sct
 
 prepare:
 	test -d edk2 || git clone -v \
 	https://github.com/tianocore/edk2 edk2
+	test -d edk2-test || git clone -v \
+	https://github.com/tianocore/edk2-test edk2-test
+	test -d edk2/SctPkg || \
+	(cd edk2 && ln -s ../edk2-test/uefi-sct/SctPkg SctPkg)
 	test -d edk2/BaseTools/Source/C/bin/ || \
-	cd edk2 && bash -c '. edk2/edksetup.sh --reconfig'
+	(cd edk2 && pwd && bash -c '. edksetup.sh --reconfig')
 	cp target.txt edk2/Conf
 	cd edk2/BaseTools/Source/C && make -j $(NPROC)
 
-build:
+build-sct:
+	cd edk2 && ./SctPkg/build.sh IA32 GCC
+
+build-shell:
 	cd edk2 && BaseTools/BinWrappers/PosixLike/build -a IA32 \
 	-p ShellPkg/ShellPkg.dsc
 	find edk2/Build/ -name '*.efi'
