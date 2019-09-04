@@ -44,7 +44,6 @@ build-shell:
 	cd edk2 && BaseTools/BinWrappers/PosixLike/build -a AARCH64 \
 	-p ShellPkg/ShellPkg.dsc
 	find edk2/Build/ -name '*.efi'
-	test -d ../u-boot-build/tftp && \
 
 sct-image:
 	mkdir -p mnt
