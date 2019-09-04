@@ -17,7 +17,9 @@ export PATH:=$(PWD)/edk2/BaseTools/BinWrappers/PosixLike/:$(PATH)
 
 all:
 	make prepare
+	make build-shell
 	make build-sct
+	make sct-image
 
 prepare:
 	test -d edk2 || git clone -v \
