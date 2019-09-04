@@ -34,14 +34,15 @@ prepare:
 build-sct:
 	cd edk2 && BaseTools/BinWrappers/PosixLike/build -a AARCH64 \
 	-p SctPkg/UEFI/UEFI_SCT.dsc
+	cd edk2/Build/UefiSct/RELEASE_GCC5 && \
+	../../../../edk2-test/uefi-sct/SctPkg/CommonGenFramework.sh \
+	uefi_sct AARCH64 InstallSct.efi
 
 build-shell:
 	cd edk2 && BaseTools/BinWrappers/PosixLike/build -a AARCH64 \
 	-p ShellPkg/ShellPkg.dsc
 	find edk2/Build/ -name '*.efi'
 	test -d ../u-boot-build/tftp && \
-	cp edk2/Build/Shell/RELEASE_GCC5/AARCH64/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi \
-	../u-boot-build/tftp/Shell_arm64.efi
 
 sct-image:
 	mkdir -p mnt
