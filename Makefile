@@ -10,7 +10,7 @@ PWD:=${shell pwd}
 export WORKSPACE:=$(PWD)/edk2/
 export EDK_TOOLS_PATH=$(PWD)/edk2/BaseTools
 export CONF_PATH=$(PWD)/edk2/Conf
-export GCC5_IA32_PREFIX=
+export GCC5_X64_PREFIX=
 export PATH:=$(PWD)/edk2/BaseTools/BinWrappers/PosixLike/:$(PATH)
 
 all:
@@ -30,15 +30,15 @@ prepare:
 	cd edk2/BaseTools/Source/C && make -j $(NPROC)
 
 build-sct:
-	cd edk2 && BaseTools/BinWrappers/PosixLike/build -a IA32 \
+	cd edk2 && BaseTools/BinWrappers/PosixLike/build -a X64 \
 	-p SctPkg/UEFI/UEFI_SCT.dsc
 
 build-shell:
-	cd edk2 && BaseTools/BinWrappers/PosixLike/build -a IA32 \
+	cd edk2 && BaseTools/BinWrappers/PosixLike/build -a X64 \
 	-p ShellPkg/ShellPkg.dsc
 	find edk2/Build/ -name '*.efi'
 	test -d ../u-boot-build/tftp && \
-	cp edk2/Build/Shell/RELEASE_GCC5/IA32/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi \
+	cp edk2/Build/Shell/RELEASE_GCC5/X64/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi \
 	../u-boot-build/tftp/Shell_i386.efi
 
 clean:
