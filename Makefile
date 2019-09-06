@@ -30,7 +30,8 @@ prepare:
 	cd edk2/BaseTools/Source/C && make -j $(NPROC)
 
 build-sct:
-	cd edk2 && ./SctPkg/build.sh IA32 GCC
+	cd edk2 && BaseTools/BinWrappers/PosixLike/build -a IA32 \
+	-p SctPkg/UEFI/UEFI_SCT.dsc
 
 build-shell:
 	cd edk2 && BaseTools/BinWrappers/PosixLike/build -a IA32 \
