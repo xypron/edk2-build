@@ -48,9 +48,9 @@ build-shell:
 sct-image:
 	mkdir -p mnt
 	sudo umount mnt || true
-	rm -f sct-arm.part1
-	/sbin/mkfs.vfat -C sct-arm.part1 131071
-	sudo mount sct-arm.part1 mnt -o uid=$(UID)
+	rm -f sct-arm32.part1
+	/sbin/mkfs.vfat -C sct-arm32.part1 131071
+	sudo mount sct-arm32.part1 mnt -o uid=$(UID)
 	cp ../edk2/ShellBinPkg/UefiShell/Arm/Shell.efi mnt/
 	echo scsi scan > efi_shell.txt
 	echo load scsi 0:1 \$${kernel_addr_r} Shell.efi >> efi_shell.txt
@@ -63,11 +63,11 @@ sct-image:
 	mkdir -p mnt/Sequence/
 	cp uboot.seq mnt/Sequence
 	sudo umount mnt || true
-	dd if=/dev/zero of=sct-arm.img bs=1024 count=1 seek=1023
-	cat sct-arm.part1 >> sct-arm.img
-	rm sct-arm.part1 efi_shell.txt
+	dd if=/dev/zero of=sct-arm32.img bs=1024 count=1 seek=1023
+	cat sct-arm32.part1 >> sct-arm32.img
+	rm sct-arm32.part1 efi_shell.txt
 	echo -e "image1: start=2048, type=ef\n" | \
-	/sbin/sfdisk sct-arm.img
+	/sbin/sfdisk sct-arm32.img
 
 clean:
 	build cleanall
