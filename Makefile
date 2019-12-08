@@ -57,9 +57,11 @@ sct-image:
 	echo bootefi \$${kernel_addr_r} \$${fdtcontroladdr} >> efi_shell.txt
 	mkimage -T script -n 'run EFI shell' -d efi_shell.txt mnt/boot.scr
 	cp startup.nsh mnt/
+	touch mnt/run
 	cp edk2/Build/UefiSct/RELEASE_GCC5/AARCH64/SctPkg/TestInfrastructure/SCT/Framework/Sct/OUTPUT/* mnt/ -R
 	cp edk2/Build/Shell/RELEASE_GCC5/AARCH64/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi mnt/
-	cp uboot.seq mnt/
+	mkdir -p mnt/Sequence
+	cp uboot.seq mnt/Sequence/
 	sudo umount mnt || true
 	dd if=/dev/zero of=sct-arm64.img bs=1024 count=1 seek=1023
 	cat sct-arm64.part1 >> sct-arm64.img
