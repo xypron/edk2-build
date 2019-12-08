@@ -58,7 +58,7 @@ sct-image:
 	mkimage -T script -n 'run EFI shell' -d efi_shell.txt mnt/boot.scr
 	cp startup.nsh mnt/
 	touch mnt/run
-	cp edk2/Build/UefiSct/RELEASE_GCC5/ARM/SctPkg/TestInfrastructure/SCT/Framework/Sct/OUTPUT/* mnt/ -R
+	cp edk2/Build/UefiSct/RELEASE_GCC5/SctPackageARM/ARM/ mnt/ -R
 	cp edk2/Build/Shell/RELEASE_GCC5/ARM/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi mnt/
 	mkdir -p mnt/Sequence/
 	cp uboot.seq mnt/Sequence
