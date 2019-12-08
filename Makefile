@@ -51,15 +51,17 @@ sct-image:
 	rm -f sct-arm.part1
 	/sbin/mkfs.vfat -C sct-arm.part1 131071
 	sudo mount sct-arm.part1 mnt -o uid=$(UID)
-	cp ../edk2/ShellBinPkg/UefiShell/AArch64/Shell.efi mnt/
+	cp ../edk2/ShellBinPkg/UefiShell/Arm/Shell.efi mnt/
 	echo scsi scan > efi_shell.txt
 	echo load scsi 0:1 \$${kernel_addr_r} Shell.efi >> efi_shell.txt
 	echo bootefi \$${kernel_addr_r} \$${fdtcontroladdr} >> efi_shell.txt
 	mkimage -T script -n 'run EFI shell' -d efi_shell.txt mnt/boot.scr
 	cp startup.nsh mnt/
+	touch mnt/run
 	cp edk2/Build/UefiSct/RELEASE_GCC5/ARM/SctPkg/TestInfrastructure/SCT/Framework/Sct/OUTPUT/* mnt/ -R
 	cp edk2/Build/Shell/RELEASE_GCC5/ARM/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi mnt/
-	cp uboot.seq mnt/
+	mkdir -p mnt/Sequence/
+	cp uboot.seq mnt/Sequence
 	sudo umount mnt || true
 	dd if=/dev/zero of=sct-arm.img bs=1024 count=1 seek=1023
 	cat sct-arm.part1 >> sct-arm.img
