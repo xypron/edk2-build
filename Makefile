@@ -8,7 +8,7 @@ NPROC=${shell nproc}
 
 UID="${shell id -u $(USER)}"
 PWD:=${shell pwd}
-export WORKSPACE:=$(PWD)/edk2/
+export WORKSPACE:=$(PWD)
 export EDK_TOOLS_PATH=$(PWD)/edk2/BaseTools
 export CONF_PATH=$(PWD)/edk2/Conf
 export GCC5_AARCH64_PREFIX=aarch64-linux-gnu-
