@@ -1,2 +1,5 @@
-edk2/Build
 .lvimrc
+Build
+*.img
+edk2*
+patch
