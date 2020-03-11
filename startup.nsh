@@ -6,3 +6,9 @@ if exist run then
 else
   SCT -c
 endif
+SCT -g result.csv
+echo run > run
+SCT -r
+echo Test results are in Report\result.csv
+echo DONE - SCT COMPLETED
+reset -s
