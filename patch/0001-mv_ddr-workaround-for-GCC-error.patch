@@ -1,0 +1,53 @@
+From e4bcd1939c042d43a3bec2621e11b874ccc79974 Mon Sep 17 00:00:00 2001
+From: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Date: Thu, 12 Mar 2020 21:12:18 +0100
+Subject: [PATCH] mv_ddr: workaround for GCC error
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+GCC 9.2 erroneously reports:
+
+  CC      mv_ddr4_training_leveling.c
+mv_ddr4_training_leveling.c: In function ‘mv_ddr4_dynamic_pb_wl_supp’:
+mv_ddr4_training_leveling.c:455:8: error: ‘wr_data’ may be used uninitialized in
+this function [-Werror=maybe-uninitialized]
+  455 |        ddr3_tip_bus_write(dev_num, ACCESS_TYPE_UNICAST, if_id,
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  456 |             ACCESS_TYPE_UNICAST, subphy_num,
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  457 |             DDR_PHY_DATA,
+      |             ~~~~~~~~~~~~~
+  458 |             WL_PHY_REG(effective_cs), wr_data);
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+---
+ mv_ddr4_training_leveling.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mv_ddr4_training_leveling.c b/mv_ddr4_training_leveling.c
+index 144e21a..4c0c0ab 100644
+--- a/mv_ddr4_training_leveling.c
++++ b/mv_ddr4_training_leveling.c
+@@ -368,7 +368,7 @@ static int mv_ddr4_dynamic_pb_wl_supp(u32 dev_num, enum mv_wl_supp_mode ecc_mode
+ 	u32 subphy_num = ddr3_tip_dev_attr_get(dev_num, MV_ATTR_OCTET_PER_INTERFACE);
+ 	u8 compare_result = 0;
+ 	u32 orig_phase;
+-	u32 rd_data, wr_data;
++	u32 rd_data, wr_data = 0;
+ 	u32 flag, step;
+ 	struct mv_ddr_topology_map *tm = mv_ddr_topology_map_get();
+ 	u32 ecc_phy_access_id;
+@@ -450,7 +450,7 @@ static int mv_ddr4_dynamic_pb_wl_supp(u32 dev_num, enum mv_wl_supp_mode ecc_mode
+ 						if (orig_phase > 1)
+ 							wr_data = (rd_data & ~0x1c0) | ((orig_phase - 2) << 6);
+ 						else if (orig_phase == 1)
+-								wr_data = (rd_data & ~0x1df);
++							wr_data = (rd_data & ~0x1df);
+ 						if (orig_phase >= 1)
+ 							ddr3_tip_bus_write(dev_num, ACCESS_TYPE_UNICAST, if_id,
+ 									   ACCESS_TYPE_UNICAST, subphy_num,
+-- 
+2.25.1
+

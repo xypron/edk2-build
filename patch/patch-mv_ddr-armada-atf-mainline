@@ -1,0 +1,4 @@
+#!/bin/sh
+git am --abort || true;
+
+git am ../patch/0001-mv_ddr-workaround-for-GCC-error.patch
