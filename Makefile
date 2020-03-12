@@ -30,6 +30,7 @@ export SCP_BL2=$(CURDIR)/binaries-marvell/mrvl_scp_bl2.img
 all:
 	make prepare
 	make build
+	make atf
 
 prepare:
 	mkdir -p patch
@@ -55,6 +56,11 @@ prepare:
 	  git config --global user.name "somebody" )
 
 build:
+	cd edk2-platforms && (git fetch || true)
+	cd edk2-platforms && (git am --abort || true)
+	cd edk2-platforms && (git reset --hard origin/master)
+	test ! -f patch/patch-edk2-platforms || \
+	(cd edk2-platforms && ../patch/patch-edk2-platforms)
 	cd edk2 && make -C BaseTools -j${NPROC}
 	cd edk2 && source edksetup.sh
 	cd edk2 && build -a AARCH64 -t GCC5 -b RELEASE \

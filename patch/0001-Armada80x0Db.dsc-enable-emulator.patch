@@ -1,0 +1,37 @@
+From f138ad250cff454bcc128d6adeed66cb861180ec Mon Sep 17 00:00:00 2001
+From: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Date: Thu, 12 Mar 2020 20:03:37 +0100
+Subject: [PATCH 1/1] Armada80x0Db.dsc: enable emulator
+
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+---
+ Platform/Marvell/Armada80x0Db/Armada80x0Db.dsc     | 2 ++
+ Platform/Marvell/Armada80x0Db/Armada80x0Db.fdf.inc | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/Platform/Marvell/Armada80x0Db/Armada80x0Db.dsc b/Platform/Marvell/Armada80x0Db/Armada80x0Db.dsc
+index 40aeb62cfa..24e281d53d 100644
+--- a/Platform/Marvell/Armada80x0Db/Armada80x0Db.dsc
++++ b/Platform/Marvell/Armada80x0Db/Armada80x0Db.dsc
+@@ -27,6 +27,8 @@
+   DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
+   DEFINE NETWORK_ISCSI_ENABLE           = FALSE
+ 
++  DEFINE X64EMU_ENABLE                  = TRUE
++
+ !include Silicon/Marvell/Armada7k8k/Armada7k8k.dsc.inc
+ 
+ [Components.common]
+diff --git a/Platform/Marvell/Armada80x0Db/Armada80x0Db.fdf.inc b/Platform/Marvell/Armada80x0Db/Armada80x0Db.fdf.inc
+index 92d2629931..059d2d7b62 100644
+--- a/Platform/Marvell/Armada80x0Db/Armada80x0Db.fdf.inc
++++ b/Platform/Marvell/Armada80x0Db/Armada80x0Db.fdf.inc
+@@ -15,3 +15,5 @@
+   # ACPI support
+   INF RuleOverride = ACPITABLE Silicon/Marvell/Armada7k8k/AcpiTables/Armada80x0Db.inf
+ !endif
++
++  INF Emulator/X86EmulatorDxe/X86EmulatorDxe.inf
+-- 
+2.25.1
+
