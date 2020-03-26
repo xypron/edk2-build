@@ -1,4 +1,0 @@
-#!/bin/sh
-git am --abort || true;
-
-git am --keep-cr ../patch/0001-Armada80x0Db.dsc-enable-emulator.patch

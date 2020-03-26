@@ -64,7 +64,7 @@ build:
 	cd edk2 && make -C BaseTools -j${NPROC}
 	cd edk2 && source edksetup.sh
 	cd edk2 && build -a AARCH64 -t GCC5 -b RELEASE \
-	-D INCLUDE_TFTP_COMMAND \
+	-D INCLUDE_TFTP_COMMAND -D X64EMU_ENABLE=TRUE \
 	-p edk2-platforms/Platform/SolidRun/Armada80x0McBin/Armada80x0McBin.dsc
 
 atf:
