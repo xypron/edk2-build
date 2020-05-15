@@ -40,7 +40,7 @@ prepare:
 	test -d edk2-platforms || git clone -v \
 	https://github.com/tianocore/edk2-platforms edk2-platforms
 	test -d edk2-non-osi || git clone -v \
-	https://github.com/tianocore/edk2-non-ose edk2-non-osi
+	https://github.com/tianocore/edk2-non-osi edk2-non-osi
 	test -d edk2/BaseTools/Source/C/bin/ || \
 	(cd edk2 && pwd && bash -c '. edksetup.sh --reconfig')
 	cp target.txt edk2/Conf
@@ -51,6 +51,10 @@ prepare:
 	https://github.com/MarvellEmbeddedProcessors/mv-ddr-marvell.git mv-ddr
 	test -d trusted-firmware-a || \
 	git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
+	test -f trusted-firmware-a/.git/hooks/commit-msg || \
+	(cd trusted-firmware-a/.git/hooks/ && \
+	wget https://review.trustedfirmware.org/tools/hooks/commit-msg && \
+	chmod 755 commit-msg)
 	test -f ~/.gitconfig || \
 	  ( git config --global user.email "somebody@example.com"  && \
 	  git config --global user.name "somebody" )
