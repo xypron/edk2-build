@@ -26,13 +26,15 @@ all:
 prepare:
 	test -d edk2 || git clone -v \
 	https://github.com/tianocore/edk2 edk2
+	cd edk2 && git checkout edk2-stable202008
 	cd edk2 && git submodule update --init
+	cd edk2/MdeModulePkg/Library/BrotliCustomDecompressLib/brotli && \
+	git reset --hard v1.0.9
 	test -d edk2-test || git clone -v \
 	https://github.com/tianocore/edk2-test edk2-test
+	cd edk2 && source edksetup.sh --reconfig
 	cp target.txt edk2/Conf
-	cd edk2 && git checkout edk2-stable202002
 	cd edk2 && make -C BaseTools -j${NPROC}
-	cd edk2 && source edksetup.sh
 
 build-genbin:
 	cp edk2-test/uefi-sct/SctPkg/Tools/Source/GenBin \
