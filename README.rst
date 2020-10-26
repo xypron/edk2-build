@@ -49,3 +49,21 @@ Build GenBin.exe
     nmake
 
 The generated executable is %EDK_TOOLS_BIN%\\GenBin.exe.
+
+Build SCT
+---------
+
+As administrator create a symbolic link in edk2:
+
+.. code-block :: powershell
+
+    cd edk2
+    mklink -D SctPkg ..\edk2-test\uefi-sct\SctPkg
+
+As normal user:
+
+.. code-block :: powershell
+
+    cd edk2
+    edksetup
+    build -p SctPkg/UEFI/UEFI_SCT.dsc
