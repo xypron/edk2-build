@@ -1,0 +1,28 @@
+Building ... c:\users\user\workspace\edk2-build\edk2\SctPkg\TestCase\UEFI\EFI\BootServices\ImageServices\BlackBoxTest\Dependency\BootServicesDriver5\BootServicesDriver5.inf [X64]
+Building ... c:\users\user\workspace\edk2-build\edk2\SctPkg\TestCase\UEFI\EFI\Protocol\SimpleTextOut\BlackBoxTest\SimpleTextOutBBTest_uefi.inf [X64]
+Building ... c:\users\user\workspace\edk2-build\edk2\SctPkg\TestCase\UEFI\EFI\BootServices\ProtocolHandlerServices\BlackBoxTest\Dependency\PlatformOverrideDriver1\PlatformOverrideDriver1.inf [X64]
+Building ... c:\users\user\workspace\edk2-build\edk2\SctPkg\TestCase\UEFI\EFI\BootServices\ProtocolHandlerServices\BlackBoxTest\Dependency\DeviceDriver4\DeviceDriver4.inf [X64]
+Building ... c:\users\user\workspace\edk2-build\edk2\SctPkg\TestCase\UEFI\EFI\Protocol\HIIImageEx\BlackBoxTest\HIIImageExBBTest.inf [X64]
+Building ... c:\users\user\workspace\edk2-build\edk2\SctPkg\TestCase\UEFI\EFI\BootServices\ProtocolHandlerServices\BlackBoxTest\Dependency\DeviceDriver5\DeviceDriver5.inf [X64]
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\bin\Hostx86\x64\lib.exe" /NOLOGO /LTCG /OUT:c:\users\user\workspace\edk2-build\edk2\Build\UefiSct\RELEASE_VS2019\X64\SctPkg\TestCase\UEFI\EFI\BootServices\ProtocolHandlerServices\BlackBoxTest\Dependency\PlatformOverrideDriver1\PlatformOverrideDriver1\OUTPUT\ProtocolHandlerServices_PlatformOverrideDriver1.lib @c:\users\user\workspace\edk2-build\edk2\Build\UefiSct\RELEASE_VS2019\X64\SctPkg\TestCase\UEFI\EFI\BootServices\ProtocolHandlerServices\BlackBoxTest\Dependency\PlatformOverrideDriver1\PlatformOverrideDriver1\OUTPUT\object_files.lst
+Building ... c:\users\user\workspace\edk2-build\edk2\SctPkg\TestCase\UEFI\EFI\Protocol\UsbIo\BlackBoxTest\UsbIoTest.inf [X64]
+Building ... c:\users\user\workspace\edk2-build\edk2\SctPkg\TestCase\UEFI\EFI\Generic\ExeMode\BlackBoxTest\ExeModeBBTest.inf [X64]
+Building ... c:\users\user\workspace\edk2-build\edk2\SctPkg\TestCase\UEFI\EFI\Protocol\SerialIo\BlackBoxTest\SerialIoBBTest.inf [X64]
+LINK : fatal error LNK1104: cannot open file ''
+Building ... c:\users\user\workspace\edk2-build\edk2\SctPkg\TestCase\UEFI\EFI\BootServices\ImageServices\BlackBoxTest\Dependency\RuntimeServicesDriver2\RuntimeServicesDriver2.inf [X64]
+NMAKE : fatal error U1077: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\bin\Hostx86\x64\lib.exe"' : return code '0x450'
+Stop.
+
+
+build.py...
+ : error 7000: Failed to execute command
+        C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\bin\Hostx86\x86\nmake.exe /nologo tbuild [c:\users\user\workspace\edk2-build\edk2\Build\UefiSct\RELEASE_VS2019\X64\SctPkg\TestCase\UEFI\EFI\BootServices\ProtocolHandlerServices\BlackBoxTest\Dependency\PlatformOverrideDriver1\PlatformOverrideDriver1]
+
+
+build.py...
+ : error F002: Failed to build module
+        c:\users\user\workspace\edk2-build\edk2\SctPkg\TestCase\UEFI\EFI\BootServices\ProtocolHandlerServices\BlackBoxTest\Dependency\PlatformOverrideDriver1\PlatformOverrideDriver1.inf [X64, VS2019, RELEASE]
+
+- Failed -
+Build end time: 07:44:31, Oct.26 2020
+Build total time: 00:00:09
