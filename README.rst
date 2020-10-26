@@ -37,3 +37,15 @@ Open VS2019 shell (from Start menu)
     edksetup
     Build -p ShellPkg/ShellPkg.dsc
 
+Build GenBin.exe
+----------------
+
+.. code-block :: powershell
+
+    xcopy /S edk2-test\uefi-sct\SctPkg\Tools\Source\GenBin edk2\BaseTools\Source\C\GenBin
+    cd edk2
+    edksetup
+    cd BaseTools\Source\C\GenBin\
+    nmake
+
+The generated executable is %EDK_TOOLS_BIN%\\GenBin.exe.
