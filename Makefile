@@ -13,7 +13,7 @@ export WORKSPACE:=$(CURDIR)
 export BASE_TOOLS_PATH=$(CURDIR)/edk2/BaseTools
 export EDK_TOOLS_PATH=$(CURDIR)/edk2/BaseTools
 export CONF_PATH=$(CURDIR)/edk2/Conf
-export GCC5_AARCH64_PREFIX=aarch64-linux-gnu-
+export GCC5_RISCV64_PREFIX=riscv64-linux-gnu-
 export PACKAGES_PATH=$(CURDIR)/edk2:$(CURDIR)/edk2-test/uefi-sct
 export PATH:=$(CURDIR)/edk2/BaseTools/BinWrappers/PosixLike/:$(PATH)
 
@@ -44,16 +44,16 @@ build-genbin:
 	edk2/BaseTools/BinWrappers/PosixLike/
 
 build-shell:
-	build -a AARCH64 -p ShellPkg/ShellPkg.dsc -n $(NPROC)
+	build -a RISCV64 -p ShellPkg/ShellPkg.dsc -n $(NPROC)
 	find Build/ -name '*.efi'
 
 build-sct:
 	test -f edk2/BaseTools/BinWrappers/PosixLike/GenBin || \
 	make build-genbin
-	build -a AARCH64 -p SctPkg/UEFI/UEFI_SCT.dsc -n $(NPROC)
+	build -a RISCV64 -p SctPkg/UEFI/UEFI_SCT.dsc -n $(NPROC)
 	cd Build/UefiSct/RELEASE_GCC5 && \
 	../../../edk2-test/uefi-sct/SctPkg/CommonGenFramework.sh \
-	uefi_sct AARCH64 InstallSct.efi
+	uefi_sct RISCV64 InstallSct.efi
 
 sct-image:
 	mkdir -p mnt
@@ -67,8 +67,8 @@ sct-image:
 	mkimage -T script -n 'run EFI shell' -d efi_shell.txt mnt/boot.scr
 	cp startup.nsh mnt/
 	touch mnt/run
-	cp Build/UefiSct/RELEASE_GCC5/SctPackageAARCH64/AARCH64/* mnt/ -R
-	cp Build/Shell/RELEASE_GCC5/AARCH64/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi mnt/
+	cp Build/UefiSct/RELEASE_GCC5/SctPackageRISCV64/AARCH64/* mnt/ -R
+	cp Build/Shell/RELEASE_GCC5/RISCV64/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi mnt/
 	mkdir -p mnt/Sequence
 	cp uboot.seq mnt/Sequence/
 	sudo umount mnt || true
