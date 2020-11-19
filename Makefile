@@ -59,7 +59,7 @@ sct-image:
 	mkdir -p mnt
 	sudo umount mnt || true
 	rm -f sct-arm64.part1
-	/sbin/mkfs.vfat -C sct-arm64.part1 131071
+	/sbin/mkfs.vfat -F 32 -C sct-arm64.part1 131071
 	sudo mount sct-arm64.part1 mnt -o uid=$(UID)
 	echo scsi scan > efi_shell.txt
 	echo load scsi 0:1 \$${kernel_addr_r} Shell.efi >> efi_shell.txt
