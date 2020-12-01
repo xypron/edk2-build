@@ -57,11 +57,8 @@ build-sct:
 	uefi_sct RISCV64 InstallSct.efi
 
 sct-image:
+	rm -rf
 	mkdir -p mnt
-	sudo umount mnt || true
-	rm -f sct-riscv64.part1
-	/sbin/mkfs.vfat -C sct-riscv64.part1 131071
-	sudo mount sct-riscv64.part1 mnt -o uid=$(UID)
 	echo scsi scan > efi_shell.txt
 	echo load scsi 0:1 \$${kernel_addr_r} Shell.efi >> efi_shell.txt
 	echo bootefi \$${kernel_addr_r} >> efi_shell.txt
@@ -72,12 +69,7 @@ sct-image:
 	cp Build/Shell/RELEASE_GCC5/RISCV64/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi mnt/
 	mkdir -p mnt/Sequence
 	cp uboot.seq mnt/Sequence/
-	sudo umount mnt || true
-	dd if=/dev/zero of=sct-riscv64.img bs=1024 count=1 seek=1023
-	cat sct-riscv64.part1 >> sct-riscv64.img
-	rm sct-riscv64.part1 efi_shell.txt
-	echo -e "image1: start=2048, type=ef\n" | \
-	/sbin/sfdisk sct-riscv64.img
+	virt-make-fs --partition=gpt --size=128M --type=vfat mnt sct-riscv64.img
 
 clean:
 	build cleanall
