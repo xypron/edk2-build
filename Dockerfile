@@ -1,6 +1,7 @@
 FROM ubuntu:xenial-20201030
 MAINTAINER Heinrich Schuchardt <xypron.glpk@gmx.de>
 LABEL Description="Build UEFI SCT for RISCV64"
+LABEL Version="0.2"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
