@@ -9,11 +9,12 @@ NPROC=${shell nproc}
 
 UID="${shell id -u $(USER)}"
 PWD:=${shell pwd}
+GCC5_RISCV64_PREFIX ?= riscv64-linux-gnu-
 export WORKSPACE:=$(CURDIR)
 export BASE_TOOLS_PATH=$(CURDIR)/edk2/BaseTools
 export EDK_TOOLS_PATH=$(CURDIR)/edk2/BaseTools
 export CONF_PATH=$(CURDIR)/edk2/Conf
-export GCC5_RISCV64_PREFIX=riscv64-linux-gnu-
+export GCC5_RISCV64_PREFIX
 export PACKAGES_PATH=$(CURDIR)/edk2:$(CURDIR)/edk2-test/uefi-sct
 export PATH:=$(CURDIR)/edk2/BaseTools/BinWrappers/PosixLike/:$(PATH)
 
