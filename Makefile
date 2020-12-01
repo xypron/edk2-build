@@ -32,7 +32,7 @@ prepare:
 	cd edk2/MdeModulePkg/Library/BrotliCustomDecompressLib/brotli && \
 	git reset --hard v1.0.9
 	test -d edk2-test || git clone -v \
-	https://github.com/tianocore/edk2-test edk2-test
+	-b riscv64 https://github.com/JohnAZoidberg/edk2-test.git edk2-test
 	cd edk2 && source edksetup.sh --reconfig
 	cp target.txt edk2/Conf
 	cd edk2 && make -C BaseTools -j${NPROC}
