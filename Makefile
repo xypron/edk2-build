@@ -24,7 +24,7 @@ all:
 	make sct-image
 
 prepare:
-	test -d edk2 || git clone -v \
+	test -d edk2 || git clone -v --recursive \
 	https://github.com/tianocore/edk2 edk2
 	cd edk2 && git checkout edk2-stable202008
 	cd edk2 && git submodule update --init
@@ -50,10 +50,8 @@ build-shell:
 build-sct:
 	test -f edk2/BaseTools/BinWrappers/PosixLike/GenBin || \
 	make build-genbin
-	build -a AARCH64 -p SctPkg/UEFI/UEFI_SCT.dsc -n $(NPROC)
-	cd Build/UefiSct/RELEASE_GCC5 && \
-	../../../edk2-test/uefi-sct/SctPkg/CommonGenFramework.sh \
-	uefi_sct AARCH64 InstallSct.efi
+	test -h SctPkg || ln -s edk2-test/uefi-sct/SctPkg/ SctPkg
+	SctPkg/build.sh AARCH64 GCC RELEASE
 
 sct-image:
 	mkdir -p mnt
