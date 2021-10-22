@@ -32,6 +32,8 @@ prepare:
 	git reset --hard v1.0.9
 	test -d edk2-test || git clone -v \
 	https://github.com/tianocore/edk2-test edk2-test
+	test -L SctPkg || \
+	(rm -rf SctPkg && ln -s edk2-test/uefi-sct/SctPkg/ SctPkg)
 	cd edk2 && source edksetup.sh --reconfig
 	cp target.txt edk2/Conf
 	cd edk2 && make -C BaseTools -j${NPROC}
