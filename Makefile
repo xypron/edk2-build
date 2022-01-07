@@ -32,11 +32,16 @@ all:
 	make build
 	make atf
 
-prepare:
+edk2:
+	git clone -v https://github.com/tianocore/edk2 edk2
+	  cd edk2 && git submodule update --init
+	cd edk2/BaseTools/Source/C/BrotliCompress/brotli && \
+	git am ../../../../../../0001-Fix-VLA-parameter-warning-893.patch
+	cd edk2/MdeModulePkg/Library/BrotliCustomDecompressLib/brotli && \
+	git am ../../../../../0001-Fix-VLA-parameter-warning-893.patch
+
+prepare: edk2
 	mkdir -p patch
-	test -d edk2 || git clone -v \
-	https://github.com/tianocore/edk2 edk2
-	cd edk2 && git submodule update --init
 	test -d edk2-platforms || git clone -v \
 	https://github.com/tianocore/edk2-platforms edk2-platforms
 	test -d edk2-non-osi || git clone -v \

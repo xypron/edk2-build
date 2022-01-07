@@ -1,0 +1,28 @@
+From c7a68c84890abef561573ce19ed2bc54b25e2888 Mon Sep 17 00:00:00 2001
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Date: Fri, 7 Jan 2022 14:19:35 +0100
+Subject: [PATCH] ddr3_training_ip_flow.h: fix build error
+
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+---
+ ddr3_training_ip_flow.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/ddr3_training_ip_flow.h b/ddr3_training_ip_flow.h
+index 3d887cc..3735718 100644
+--- a/ddr3_training_ip_flow.h
++++ b/ddr3_training_ip_flow.h
+@@ -210,8 +210,8 @@ int ddr3_tip_write_mrs_cmd(u32 dev_num, u32 *cs_mask_arr, enum mr_number mr_num,
+ int ddr3_tip_write_cs_result(u32 dev_num, u32 offset);
+ int ddr3_tip_reset_fifo_ptr(u32 dev_num);
+ int ddr3_tip_read_pup_value(u32 dev_num, u32 pup_values[], int reg_addr, u32 mask);
+-int ddr3_tip_read_adll_value(u32 dev_num, u32 pup_values[], u32 reg_addr, u32 mask);
+-int ddr3_tip_write_adll_value(u32 dev_num, u32 pup_values[], u32 reg_addr);
++int ddr3_tip_read_adll_value(u32 dev_num, u32 pup_values[MAX_INTERFACE_NUM * MAX_BUS_NUM], u32 reg_addr, u32 mask);
++int ddr3_tip_write_adll_value(u32 dev_num, u32 pup_values[MAX_INTERFACE_NUM * MAX_BUS_NUM], u32 reg_addr);
+ int ddr3_tip_tune_training_params(u32 dev_num, struct tune_train_params *params);
+ 
+ #endif /* _DDR3_TRAINING_IP_FLOW_H_ */
+-- 
+2.32.0
+

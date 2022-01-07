@@ -2,3 +2,4 @@
 git am --abort || true;
 
 git am ../patch/0001-mv_ddr-workaround-for-GCC-error.patch
+git am ../patch/0001-ddr3_training_ip_flow.h-fix-build-error.patch
