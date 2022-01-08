@@ -15,7 +15,7 @@ export BASE_TOOLS_PATH=$(CURDIR)/edk2/BaseTools
 export EDK_TOOLS_PATH=$(CURDIR)/edk2/BaseTools
 export CONF_PATH=$(CURDIR)/edk2/Conf
 export GCC5_RISCV64_PREFIX
-export PACKAGES_PATH=$(CURDIR)/edk2:$(CURDIR)/edk2-test/uefi-sct
+export PACKAGES_PATH=$(CURDIR)/edk2:$(CURDIR)/edk2-platforms:$(CURDIR)/edk2-test/uefi-sct
 export PATH:=$(CURDIR)/edk2/BaseTools/BinWrappers/PosixLike/:$(PATH)
 
 all:
@@ -35,6 +35,11 @@ edk2:
 	git am 0001-Fix-VLA-parameter-warning-893.patch
 	cd edk2 && python3 BaseTools/Scripts/SetupGit.py
 
+edk2-platforms:
+	git clone -v https://github.com/tianocore/edk2-platforms edk2-platforms
+	cd edk2-platforms && git submodule update --init
+	cd edk2-platforms && python3 ../edk2/BaseTools/Scripts/SetupGit.py
+
 prepare: edk2
 	test -d edk2-test || git clone -v \
 	-b riscv64 https://github.com/JohnAZoidberg/edk2-test.git edk2-test
@@ -48,6 +53,20 @@ build-genbin:
 	cd edk2/BaseTools/Source/C/GenBin && make
 	cp edk2/BaseTools/Source/C/bin/GenBin \
 	edk2/BaseTools/BinWrappers/PosixLike/
+
+U540.fd: edk2-platforms
+	# build -a RISCV64 -p Platform/RISC-V/PlatformPkg/RiscVPlatformPkg.dsc -n $(NPROC)
+	build -a RISCV64 -p Platform/SiFive/U5SeriesPkg/FreedomU540HiFiveUnleashedBoard/U540.dsc -n $(NPROC)
+	cp ./Build/FreedomU540HiFiveUnleashed/RELEASE_GCC5/FV/U540.fd .
+
+build-edk2: U540.fd
+
+build-foo:
+	build -a RISCV64 -p Platform/Qemu/RiscvVirt/RiscvVirt.dsc -n $(NPROC)
+
+run:	U540.fd
+	qemu-system-riscv64 -cpu sifive-u54 -machine sifive_u \
+	-m 4096 -smp cpus=5,maxcpus=5 -nographic -bios U540.fd
 
 build-shell:
 	build -a RISCV64 -p ShellPkg/ShellPkg.dsc -n $(NPROC)
