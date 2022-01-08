@@ -23,13 +23,18 @@ all:
 	make build-sct
 	make sct-image
 
-prepare:
-	test -d edk2 || git clone -v --recursive \
-	https://github.com/tianocore/edk2 edk2
-	cd edk2 && git checkout edk2-stable202108-rc1
+edk2:
+	git clone -v https://github.com/tianocore/edk2 edk2
 	cd edk2 && git submodule update --init
+	cd edk2/BaseTools/Source/C/BrotliCompress/brotli && \
+	git format-patch 0a3944c8c99b8d10cc4325f721b7c273d2b41f7b~..0a3944c8c99b8d10cc4325f721b7c273d2b41f7b && \
+	git am 0001-Fix-VLA-parameter-warning-893.patch
 	cd edk2/MdeModulePkg/Library/BrotliCustomDecompressLib/brotli && \
-	git reset --hard v1.0.9
+	git format-patch 0a3944c8c99b8d10cc4325f721b7c273d2b41f7b~..0a3944c8c99b8d10cc4325f721b7c273d2b41f7b && \
+	git am 0001-Fix-VLA-parameter-warning-893.patch
+	cd edk2 && python3 BaseTools/Scripts/SetupGit.py
+
+prepare: edk2
 	test -d edk2-test || git clone -v \
 	https://github.com/tianocore/edk2-test edk2-test
 	test -L SctPkg || \
