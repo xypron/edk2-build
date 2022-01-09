@@ -18,6 +18,9 @@ export GCC5_RISCV64_PREFIX
 export PACKAGES_PATH=$(CURDIR)/edk2:$(CURDIR)/edk2-platforms:$(CURDIR)/edk2-test/uefi-sct
 export PATH:=$(CURDIR)/edk2/BaseTools/BinWrappers/PosixLike/:$(PATH)
 
+.PHONY: all build-edk2 build-genbin build-qemu build-sct chmode clean prepare run sct-image
+.SILENT: chmode
+
 all:
 	make prepare
 	make build-shell
@@ -40,9 +43,12 @@ edk2-platforms:
 	cd edk2-platforms && git submodule update --init
 	cd edk2-platforms && python3 ../edk2/BaseTools/Scripts/SetupGit.py
 
+edk2-test:
+	git clone -v https://github.com/tianocore/edk2-test edk2-test
+	cd edk2-test && git submodule update --init
+	cd edk2-test && python3 ../edk2/BaseTools/Scripts/SetupGit.py
+
 prepare: edk2
-	test -d edk2-test || git clone -v \
-	-b riscv64 https://github.com/JohnAZoidberg/edk2-test.git edk2-test
 	cd edk2 && source edksetup.sh --reconfig
 	cp target.txt edk2/Conf
 	cd edk2 && make -C BaseTools -j${NPROC}
@@ -61,18 +67,19 @@ U540.fd: edk2-platforms
 
 build-edk2: U540.fd
 
-build-foo:
+build-qemu:
 	build -a RISCV64 -p Platform/Qemu/RiscvVirt/RiscvVirt.dsc -n $(NPROC)
 
 run:	U540.fd
 	qemu-system-riscv64 -cpu sifive-u54 -machine sifive_u \
 	-m 4096 -smp cpus=5,maxcpus=5 -nographic -bios U540.fd
 
-build-shell:
+Shell_riscv64.efi:
 	build -a RISCV64 -p ShellPkg/ShellPkg.dsc -n $(NPROC)
-	find Build/ -name '*.efi'
+	cp Build/Shell/RELEASE_GCC5/RISCV64/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi \
+	Shell_riscv64.efi
 
-build-sct:
+build-sct: edk2-test
 	test -f edk2/BaseTools/BinWrappers/PosixLike/GenBin || \
 	make build-genbin
 	build -a RISCV64 -p SctPkg/UEFI/UEFI_SCT.dsc -n $(NPROC)
@@ -80,7 +87,13 @@ build-sct:
 	../../../edk2-test/uefi-sct/SctPkg/CommonGenFramework.sh \
 	uefi_sct RISCV64 InstallSct.efi
 
-sct-image:
+chmode:
+	# virt-make-fs needs read access
+	if [ ! $$(stat -c "%a" /boot/vmlinuz-$$(uname -r)) = 644 ]; then \
+	echo sudo chmod 644 /boot/vmlinuz-$$(uname -r) && \
+	sudo chmod 644 /boot/vmlinuz-$$(uname -r); fi
+
+sct-image: Shell_riscv64.efi chmode
 	rm -rf mnt
 	mkdir -p mnt
 	echo scsi scan > efi_shell.txt
@@ -90,7 +103,7 @@ sct-image:
 	cp startup.nsh mnt/
 	touch mnt/run
 	cp Build/UefiSct/RELEASE_GCC5/SctPackageRISCV64/RISCV64/* mnt/ -R
-	cp Build/Shell/RELEASE_GCC5/RISCV64/ShellPkg/Application/Shell/Shell/OUTPUT/Shell.efi mnt/
+	cp Shell_riscv64.efi mnt/Shell.efi
 	mkdir -p mnt/Sequence
 	cp uboot.seq mnt/Sequence/
 	virt-make-fs --partition=gpt --size=128M --type=vfat mnt sct-riscv64.img
