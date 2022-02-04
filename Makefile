@@ -83,10 +83,8 @@ Shell_riscv64.efi:
 build-sct: edk2-test
 	test -f edk2/BaseTools/BinWrappers/PosixLike/GenBin || \
 	make build-genbin
-	build -a RISCV64 -p SctPkg/UEFI/UEFI_SCT.dsc -n $(NPROC)
-	cd Build/UefiSct/RELEASE_GCC5 && \
-	../../../edk2-test/uefi-sct/SctPkg/CommonGenFramework.sh \
-	uefi_sct RISCV64 InstallSct.efi
+	test -h SctPkg || ln -s edk2-test/uefi-sct/SctPkg/ SctPkg
+	SctPkg/build.sh RISCV64 GCC RELEASE
 
 chmode:
 	# virt-make-fs needs read access
