@@ -14,6 +14,7 @@ export BASE_TOOLS_PATH=$(CURDIR)/edk2/BaseTools
 export EDK_TOOLS_PATH=$(CURDIR)/edk2/BaseTools
 export CONF_PATH=$(CURDIR)/edk2/Conf
 export GCC5_AARCH64_PREFIX=aarch64-linux-gnu-
+export CROSS_COMPILE_64=aarch64-linux-gnu-
 export PACKAGES_PATH=$(CURDIR)/edk2:$(CURDIR)/edk2-test/uefi-sct
 export PATH:=$(CURDIR)/edk2/BaseTools/BinWrappers/PosixLike/:$(PATH)
 
