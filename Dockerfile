@@ -12,7 +12,7 @@ RUN apt-get install -y \
 	bison \
 	build-essential \
 	coccinelle \
-    	device-tree-compiler \
+	device-tree-compiler \
 	dfu-util \
 	efitools \
 	flex \
@@ -21,14 +21,14 @@ RUN apt-get install -y \
 	liblz4-tool \
 	libguestfs-tools \
 	libncurses-dev \
-  	libpython3-dev \
+	libpython3-dev \
 	libsdl2-dev \
 	libssl-dev \
 	linux-image-generic \
 	lzma-alone \
 	openssl \
 	python3 \
-  	python3-coverage \
+	python3-coverage \
 	python3-pyelftools \
 	python3-pytest \
 	srecord \
