@@ -23,7 +23,6 @@ export PATH:=$(CURDIR)/edk2/BaseTools/BinWrappers/PosixLike/:$(PATH)
 
 all:
 	make prepare
-	make build-shell
 	make build-sct
 	make sct-image
 
@@ -67,8 +66,11 @@ U540.fd: edk2-platforms
 
 build-edk2: U540.fd
 
-build-qemu:
+RISCVVIRT.fd:
 	build -a RISCV64 -p Platform/Qemu/RiscvVirt/RiscvVirt.dsc -n $(NPROC)
+	cp Build/RiscvVirt/RELEASE_GCC5/FV/RISCVVIRT.fd .
+
+build-qemu: RISCVVIRT.fd
 
 run:	U540.fd
 	qemu-system-riscv64 -cpu sifive-u54 -machine sifive_u \
