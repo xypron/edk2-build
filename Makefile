@@ -28,14 +28,8 @@ all:
 
 edk2:
 	git clone -v https://github.com/tianocore/edk2 edk2
-	cd edk2 && git submodule update --init
-	cd edk2/BaseTools/Source/C/BrotliCompress/brotli && \
-	git format-patch 0a3944c8c99b8d10cc4325f721b7c273d2b41f7b~..0a3944c8c99b8d10cc4325f721b7c273d2b41f7b && \
-	git am 0001-Fix-VLA-parameter-warning-893.patch
-	cd edk2/MdeModulePkg/Library/BrotliCustomDecompressLib/brotli && \
-	git format-patch 0a3944c8c99b8d10cc4325f721b7c273d2b41f7b~..0a3944c8c99b8d10cc4325f721b7c273d2b41f7b && \
-	git am 0001-Fix-VLA-parameter-warning-893.patch
 	cd edk2 && python3 BaseTools/Scripts/SetupGit.py
+	cd edk2 && git submodule update --init
 
 edk2-platforms:
 	git clone -v https://github.com/tianocore/edk2-platforms edk2-platforms
@@ -48,6 +42,13 @@ edk2-test:
 	cd edk2-test && python3 ../edk2/BaseTools/Scripts/SetupGit.py
 
 prepare: edk2
+	cd edk2 && git submodule update --init
+	cd edk2/BaseTools/Source/C/BrotliCompress/brotli && \
+	git format-patch 0a3944c8c99b8d10cc4325f721b7c273d2b41f7b~..0a3944c8c99b8d10cc4325f721b7c273d2b41f7b && \
+	git am 0001-Fix-VLA-parameter-warning-893.patch
+	cd edk2/MdeModulePkg/Library/BrotliCustomDecompressLib/brotli && \
+	git format-patch 0a3944c8c99b8d10cc4325f721b7c273d2b41f7b~..0a3944c8c99b8d10cc4325f721b7c273d2b41f7b && \
+	git am 0001-Fix-VLA-parameter-warning-893.patch
 	cd edk2 && source edksetup.sh --reconfig
 	cp target.txt edk2/Conf
 	cd edk2 && make -C BaseTools -j${NPROC}
