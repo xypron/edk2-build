@@ -39,7 +39,7 @@ edk2-test:
 	cd edk2-test && git submodule update --init
 	cd edk2-test && python3 ../edk2/BaseTools/Scripts/SetupGit.py
 
-prepare: edk2
+prepare: edk2 edk2-platforms
 	cd edk2 && git submodule update --init
 	cd edk2/BaseTools/Source/C/BrotliCompress/brotli && \
 	git format-patch 0a3944c8c99b8d10cc4325f721b7c273d2b41f7b~..0a3944c8c99b8d10cc4325f721b7c273d2b41f7b && \
