@@ -101,10 +101,11 @@ sct-image: Shell_riscv64.efi chmode
 	mkimage -T script -n 'run EFI shell' -d efi_shell.txt mnt/boot.scr
 	cp startup.nsh mnt/
 	touch mnt/run
-	cp Build/UefiSct/RELEASE_GCC5/SctPackageRISCV64/RISCV64/* mnt/ -R
+	mkdir mnt/sct/
+	cp Build/UefiSct/RELEASE_GCC5/SctPackageRISCV64/RISCV64/* mnt/sct/ -R
 	cp Shell_riscv64.efi mnt/Shell.efi
-	mkdir -p mnt/Sequence
-	cp uboot.seq mnt/Sequence/
+	mkdir -p mnt/sct/Sequence
+	cp uboot.seq mnt/sct/Sequence/
 	virt-make-fs --partition=gpt --size=128M --type=vfat mnt sct-riscv64.img
 
 clean:
