@@ -87,6 +87,7 @@ sct-image: Shell_arm64.efi chmode
 	mkdir -p mnt/sct/Sequence
 	cp uboot.seq mnt/sct/Sequence/
 	virt-make-fs --partition=gpt --size=128M --type=vfat mnt sct-arm64.img
+	/sbin/sfdisk --part-type sct-arm64.img 1 C12A7328-F81F-11D2-BA4B-00A0C93EC93B
 
 clean:
 	build cleanall
