@@ -1,12 +1,13 @@
 FS0:
 cls
+cd sct
 if exist run then
   rm run
-  sct\SCT -s uboot.seq
+  SCT -s uboot.seq
 else
-  sct\SCT -c
+  SCT -c
 endif
-sct\SCT -g result.csv
-echo Test results are in Report\result.csv
-echo DONE - SCT COMPLETED
+SCT -g result.csv
+@echo "Test results are in Report\result.csv"
+@echo "DONE - SCT COMPLETED"
 reset -s
