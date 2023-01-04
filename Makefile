@@ -38,12 +38,6 @@ edk2-test:
 
 prepare: edk2
 	cd edk2 && git submodule update --init
-	cd edk2/BaseTools/Source/C/BrotliCompress/brotli && \
-	git format-patch 0a3944c8c99b8d10cc4325f721b7c273d2b41f7b~..0a3944c8c99b8d10cc4325f721b7c273d2b41f7b && \
-	git am 0001-Fix-VLA-parameter-warning-893.patch
-	cd edk2/MdeModulePkg/Library/BrotliCustomDecompressLib/brotli && \
-	git format-patch 0a3944c8c99b8d10cc4325f721b7c273d2b41f7b~..0a3944c8c99b8d10cc4325f721b7c273d2b41f7b && \
-	git am 0001-Fix-VLA-parameter-warning-893.patch
 	cd edk2 && source edksetup.sh --reconfig
 	cp target.txt edk2/Conf
 	cd edk2 && make -C BaseTools -j${NPROC}
