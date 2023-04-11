@@ -66,8 +66,9 @@ U540.fd: edk2-platforms
 build-edk2: U540.fd
 
 RISCVVIRT.fd:
-	build -a RISCV64 -p OvmfPkg/RiscVVirt/RiscVVirt.dsc -n $(NPROC)
-	cp ./Build/RiscvVirt/RELEASE_GCC5/FV/RISCVVIRT.fd .
+	build -a RISCV64 -p OvmfPkg/RiscVVirt/RiscVVirtQemu.dsc -n $(NPROC)
+	cp ./Build/RiscVVirtQemu/RELEASE_GCC5/FV/RISCV_VIRT.fd RISCVVIRT.fd
+	truncate -s 33554432 RISCVVIRT.fd
 
 build-qemu: RISCVVIRT.fd
 
